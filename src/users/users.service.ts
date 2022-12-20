@@ -17,7 +17,10 @@ export class UsersService {
   }
 
   async getAllUsers() {
-    const users = await this.userRepository.findAll({ include: { all: true } })
+    const usersObjects = await this.userRepository.findAll({ include: { all: true } })
+    const users = usersObjects.map((user) => {
+      return { email: user.email, role: user.roles.map((role) => role.value) }
+    })
     return users
   }
 
