@@ -8,7 +8,7 @@ async function start() {
 
   const config = new DocumentBuilder()
     .setTitle('Play2GetHer')
-    .setDescription('Документация REST API')
+    .setDescription('REST API documentation')
     .setVersion('1.0.0')
     .addTag('awqsomee')
     .build()
