@@ -10,6 +10,7 @@ import { UserGames } from './user-games.model'
 @Module({
   controllers: [GamesController],
   providers: [GamesService],
-  imports: [SequelizeModule.forFeature([Game]), User, UserGames, UserRoles],
+  imports: [SequelizeModule.forFeature([Game, User, UserGames, UserRoles])],
+  exports: [GamesService],
 })
 export class GamesModule {}

@@ -20,7 +20,7 @@ export class GamesService {
   }
 
   async getGameInfo(title: string): Promise<Game> {
-    const game = await this.gameRepository.findOne({ where: { title }, include: { all: true } })
+    const game = await this.getGameByTitle(title)
     if (!game) throw new HttpException(`Game not found`, HttpStatus.BAD_REQUEST)
     return game
   }
@@ -29,5 +29,15 @@ export class GamesService {
     const game = await this.gameRepository.findOne({ where: { id } })
     await game.destroy()
     return { message: 'Game was removed' }
+  }
+
+  async getGameByTitle(title: string) {
+    const game = await this.gameRepository.findOne({ where: { title }, include: { all: true } })
+    return game
+  }
+
+  async getGameById(id: number) {
+    const game = await this.gameRepository.findOne({ where: { id }, include: { all: true } })
+    return game
   }
 }

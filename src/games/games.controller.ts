@@ -17,14 +17,12 @@ export class GamesController {
   }
 
   @Get(':title')
-  get(@Param() params: { title: string }) {
-    const { title } = params
+  get(@Param('title') title: string) {
     return this.gameService.getGameInfo(title)
   }
 
   @Delete(':id')
-  remove(@Param() params: { id: number }) {
-    const { id } = params
+  remove(@Param('id') id: number) {
     return this.gameService.removeGame(id)
   }
 }

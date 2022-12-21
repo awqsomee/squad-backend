@@ -2,6 +2,7 @@ import { BelongsToMany, Column, DataType, Model, Table } from 'sequelize-typescr
 import { ApiProperty } from '@nestjs/swagger'
 import { User } from 'src/users/user.model'
 import { UserGames } from './user-games.model'
+import { UserGamesSeek } from './user-games-seek.model'
 
 interface GameCreationAttrs {
   title: string
@@ -27,9 +28,9 @@ export class Game extends Model<Game, GameCreationAttrs> {
   @Column({ type: DataType.DATE })
   releaseDate: Date
 
-  @BelongsToMany(() => Game, () => UserGames)
+  @BelongsToMany(() => User, () => UserGames)
   users: User[]
 
-  // @BelongsToMany(() => Role, () => UserRoles)
-  // tags: Tag[]
+  @BelongsToMany(() => User, () => UserGamesSeek)
+  seekers: User[]
 }
