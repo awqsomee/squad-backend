@@ -11,6 +11,9 @@ import { GamesModule } from './games/games.module'
 import { Game } from './games/game.model'
 import { UserGames } from './games/user-games.model'
 import { UserGamesSeek } from './games/user-games-seek.model'
+import { FileModule } from './file/file.module'
+import { ServeStaticModule } from '@nestjs/serve-static'
+import * as path from 'path'
 
 @Module({
   controllers: [],
@@ -29,10 +32,14 @@ import { UserGamesSeek } from './games/user-games-seek.model'
       models: [User, Game, UserGames, UserGamesSeek, Role, UserRoles],
       autoLoadModels: true,
     }),
+    ServeStaticModule.forRoot({
+      rootPath: path.resolve(__dirname, 'data'),
+    }),
     UsersModule,
     GamesModule,
     RolesModule,
     AuthModule,
+    FileModule,
   ],
 })
 export class AppModule {}

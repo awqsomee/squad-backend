@@ -1,4 +1,6 @@
-import { Body, Query, Param, Controller, Get, Post, Delete } from '@nestjs/common'
+import { Body, Query, Param, Controller, Get, Post, Delete, UseInterceptors } from '@nestjs/common'
+import { UploadedFile } from '@nestjs/common/decorators'
+import { FileInterceptor } from '@nestjs/platform-express/multer'
 import { CreateGameDto } from './dto/create-game.dto'
 import { GamesService } from './games.service'
 
@@ -7,8 +9,9 @@ export class GamesController {
   constructor(private gameService: GamesService) {}
 
   @Post()
-  create(@Body() gameDto: CreateGameDto) {
-    return this.gameService.addGame(gameDto)
+  @UseInterceptors(FileInterceptor('cover'))
+  create(@UploadedFile() cover: Express.Multer.File, @Body() gameDto: CreateGameDto) {
+    return this.gameService.addGame(gameDto, cover)
   }
 
   @Get()

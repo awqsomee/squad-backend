@@ -1,17 +1,24 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
 import { InjectModel } from '@nestjs/sequelize'
 import { Op } from 'sequelize'
+import { FileService } from 'src/file/file.service'
 import { CreateGameDto } from './dto/create-game.dto'
 import { Game } from './game.model'
 
+interface IGame {
+  dto: CreateGameDto
+  cover: string
+}
+
 @Injectable()
 export class GamesService {
-  constructor(@InjectModel(Game) private gameRepository: typeof Game) {}
+  constructor(@InjectModel(Game) private gameRepository: typeof Game, private fileService: FileService) {}
 
-  async addGame(dto: CreateGameDto): Promise<Game> {
+  async addGame(dto: CreateGameDto, cover): Promise<Game> {
+    const coverPath = this.fileService.createFile(cover)
     let game = await this.gameRepository.findOne({ where: { title: dto.title }, include: { all: true } })
     if (game) throw new HttpException(`Game with title "${dto.title}" already exists`, HttpStatus.BAD_REQUEST)
-    game = await this.gameRepository.create(dto)
+    game = await this.gameRepository.create({ ...dto, cover: coverPath } as any)
     return game
   }
 
