@@ -29,12 +29,19 @@ export class UsersService {
     if (title != null) {
       game = await this.gameService.getGameByTitle(title)
       usersObjects = await this.userRepository.findAll({
-        include: {
-          model: Game,
-          where: {
-            id: game.id,
+        include: [
+          {
+            model: Game,
+            as: 'searches',
+            where: {
+              id: game.id,
+            },
           },
-        },
+          {
+            model: Game,
+            as: 'games',
+          },
+        ],
         offset,
         limit,
       })
@@ -77,11 +84,11 @@ export class UsersService {
     }
   }
 
-  async searchForTeam(currentUser: User, id: number, seeking: boolean) {
+  async searchForTeam(currentUser: User, id: number, searching: boolean) {
     const game = await this.gameService.getGameById(id)
     if (!game) throw new BadRequestException("Game doesn't exist")
     const user = await this.getUserById(currentUser.id)
-    if (seeking) {
+    if (searching) {
       await user.$set('searches', [...user.searches.map((game) => game.id), game.id])
       return { message: 'Game added' }
     } else {

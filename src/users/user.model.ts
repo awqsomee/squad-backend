@@ -28,12 +28,12 @@ export class User extends Model<User, UserCreationAttrs> {
   @BelongsToMany(() => Role, () => UserRoles)
   roles: Role[]
 
-  @BelongsToMany(() => Game, () => UserGames)
+  @BelongsToMany(() => Game, () => UserGames, 'userId')
   games: Game[]
 
   // @BelongsToMany(() => Game, () => UserGames)
   // wishlist: Game[]
 
-  @BelongsToMany(() => Game, () => UserGamesSeek)
+  @BelongsToMany(() => Game, () => UserGamesSeek, 'seekerId')
   searches: Game[]
 }

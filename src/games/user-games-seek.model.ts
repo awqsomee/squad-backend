@@ -7,11 +7,11 @@ export class UserGamesSeek extends Model<UserGamesSeek> {
   @Column({ type: DataType.INTEGER, unique: true, autoIncrement: true, primaryKey: true })
   id: number
 
-  @ForeignKey(() => User)
-  @Column({ type: DataType.INTEGER })
-  userId: number
-
   @ForeignKey(() => Game)
   @Column({ type: DataType.INTEGER })
-  gameId: number
+  searchId: number
+
+  @ForeignKey(() => User)
+  @Column({ type: DataType.INTEGER })
+  seekerId: number
 }

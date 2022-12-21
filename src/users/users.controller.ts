@@ -1,8 +1,6 @@
 import { Body, Controller, Req, Get, Post, UseGuards, Query } from '@nestjs/common'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard'
-import { Roles } from 'src/auth/roles-auth.decorator'
-import { RolesGuard } from 'src/auth/roles.guard'
 import { CreateUserDto } from './dto/create-user.dto'
 import { User } from './user.model'
 import { UsersService } from './users.service'
@@ -33,8 +31,8 @@ export class UsersController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Post('/seek')
-  seek(@Body('id') id: number, @Body('seeking') seeking: boolean, @Req() req) {
-    return this.userService.searchForTeam(req.user, id, seeking)
+  @Post('/search')
+  search(@Body('id') id: number, @Body('searching') searching: boolean, @Req() req) {
+    return this.userService.searchForTeam(req.user, id, searching)
   }
 }

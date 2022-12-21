@@ -28,9 +28,9 @@ export class Game extends Model<Game, GameCreationAttrs> {
   @Column({ type: DataType.DATE })
   releaseDate: Date
 
-  @BelongsToMany(() => User, () => UserGames)
+  @BelongsToMany(() => User, () => UserGames, 'gameId')
   users: User[]
 
-  @BelongsToMany(() => User, () => UserGamesSeek)
+  @BelongsToMany(() => User, () => UserGamesSeek, 'searchId')
   seekers: User[]
 }
