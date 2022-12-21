@@ -19,7 +19,7 @@ export class Game extends Model<Game, GameCreationAttrs> {
   title: string
 
   // @ApiProperty({ example: 'qwerty', description: 'User password' })
-  @Column({ type: DataType.STRING })
+  @Column({ type: DataType.TEXT })
   description: string
 
   @Column({ type: DataType.STRING })

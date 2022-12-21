@@ -89,6 +89,7 @@ export class UsersService {
       return { message: 'Game added' }
     } else {
       await user.$set('games', [...user.games.filter((userGame) => userGame.id != game.id)])
+      await user.$set('searches', [...user.searches.filter((userGame) => userGame.id != game.id)])
       return { message: 'Game removed' }
     }
   }
