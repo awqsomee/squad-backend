@@ -7,7 +7,7 @@ import { UserGames } from 'src/games/user-games.model'
 import { UserGamesSeek } from 'src/games/user-games-seek.model'
 
 interface UserCreationAttrs {
-  email: string
+  username: string
   password: string
 }
 
@@ -19,7 +19,7 @@ export class User extends Model<User, UserCreationAttrs> {
 
   @ApiProperty({ example: 'email@email.com', description: 'User email' })
   @Column({ type: DataType.STRING, unique: true, allowNull: false })
-  email: string
+  username: string
 
   @ApiProperty({ example: 'qwerty', description: 'User password' })
   @Column({ type: DataType.STRING })

@@ -26,7 +26,7 @@ export class UsersService {
   async getAllUsers(limit = 20, offset = 0, title = null) {
     let game: Game
     let usersObjects: User[]
-    if (title != null) {
+    if (title != '') {
       game = await this.gameService.getGameByTitle(title)
       usersObjects = await this.userRepository.findAll({
         include: [
@@ -57,13 +57,13 @@ export class UsersService {
     //   return { email: user.email, role: user.roles.map((role) => role.value) }
     // })
     const users = usersObjects.map((user) => {
-      return { email: user.email, searches: user.searches, games: user.games }
+      return { username: user.username, searches: user.searches, games: user.games }
     })
     return users
   }
 
-  async getUserByEmail(email: string): Promise<User> {
-    const user = await this.userRepository.findOne({ where: { email }, include: { all: true } })
+  async getUserByUsername(username: string): Promise<User> {
+    const user = await this.userRepository.findOne({ where: { username }, include: { all: true } })
     return user
   }
   async getUserById(id: number): Promise<User> {
@@ -90,6 +90,7 @@ export class UsersService {
     const user = await this.getUserById(currentUser.id)
     if (searching) {
       await user.$set('searches', [...user.searches.map((game) => game.id), game.id])
+      await user.$set('games', [...user.games.map((game) => game.id), game.id])
       return { message: 'Game added' }
     } else {
       await user.$set('searches', [...user.searches.filter((userGame) => userGame.id != game.id)])
