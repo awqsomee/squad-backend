@@ -56,10 +56,10 @@ export class UsersService {
     // const users = usersObjects.map((user) => {
     //   return { email: user.email, role: user.roles.map((role) => role.value) }
     // })
-    // const users = usersObjects.map((user) => {
-    //   return { email: user.email }
-    // })
-    return usersObjects
+    const users = usersObjects.map((user) => {
+      return { email: user.email, searches: user.searches, games: user.games }
+    })
+    return users
   }
 
   async getUserByEmail(email: string): Promise<User> {
