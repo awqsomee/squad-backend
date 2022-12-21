@@ -23,12 +23,36 @@ export class UsersService {
     return user
   }
 
-  async getAllUsers() {
-    const usersObjects = await this.userRepository.findAll({ include: { all: true } })
-    const users = usersObjects.map((user) => {
-      return { email: user.email, role: user.roles.map((role) => role.value) }
-    })
-    return users
+  async getAllUsers(limit = 20, offset = 0, title = null) {
+    let game: Game
+    let usersObjects: User[]
+    if (title != null) {
+      game = await this.gameService.getGameByTitle(title)
+      usersObjects = await this.userRepository.findAll({
+        include: {
+          model: Game,
+          where: {
+            id: game.id,
+          },
+        },
+        offset,
+        limit,
+      })
+    } else
+      usersObjects = await this.userRepository.findAll({
+        include: {
+          all: true,
+        },
+        offset,
+        limit,
+      })
+    // const users = usersObjects.map((user) => {
+    //   return { email: user.email, role: user.roles.map((role) => role.value) }
+    // })
+    // const users = usersObjects.map((user) => {
+    //   return { email: user.email }
+    // })
+    return usersObjects
   }
 
   async getUserByEmail(email: string): Promise<User> {
