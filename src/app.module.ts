@@ -10,6 +10,7 @@ import { AuthModule } from './auth/auth.module'
 import { GamesModule } from './games/games.module'
 import { Game } from './games/game.model'
 import { UserGames } from './games/user-games.model'
+import { UserGamesSeek } from './games/user-games-seek.model'
 
 @Module({
   controllers: [],
@@ -25,7 +26,7 @@ import { UserGames } from './games/user-games.model'
       username: process.env.POSTGRES_USER,
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DB,
-      models: [User, Game, UserGames, Role, UserRoles],
+      models: [User, Game, UserGames, UserGamesSeek, Role, UserRoles],
       autoLoadModels: true,
     }),
     UsersModule,

@@ -76,4 +76,17 @@ export class UsersService {
       return { message: 'Game removed' }
     }
   }
+
+  async searchForTeam(currentUser: User, id: number, seeking: boolean) {
+    const game = await this.gameService.getGameById(id)
+    if (!game) throw new BadRequestException("Game doesn't exist")
+    const user = await this.getUserById(currentUser.id)
+    if (seeking) {
+      await user.$set('searches', [...user.searches.map((game) => game.id), game.id])
+      return { message: 'Game added' }
+    } else {
+      await user.$set('searches', [...user.searches.filter((userGame) => userGame.id != game.id)])
+      return { message: 'Game removed' }
+    }
+  }
 }

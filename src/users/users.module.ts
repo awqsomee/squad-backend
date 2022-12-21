@@ -3,6 +3,7 @@ import { SequelizeModule } from '@nestjs/sequelize'
 import { AuthModule } from 'src/auth/auth.module'
 import { Game } from 'src/games/game.model'
 import { GamesModule } from 'src/games/games.module'
+import { UserGamesSeek } from 'src/games/user-games-seek.model'
 import { UserGames } from 'src/games/user-games.model'
 import { Role } from 'src/roles/role.model'
 import { RolesModule } from 'src/roles/roles.module'
@@ -15,7 +16,7 @@ import { UsersService } from './users.service'
   controllers: [UsersController],
   providers: [UsersService],
   imports: [
-    SequelizeModule.forFeature([User, Game, UserGames, Role, UserRoles]),
+    SequelizeModule.forFeature([User, Game, UserGames, UserGamesSeek, Role, UserRoles]),
     GamesModule,
     RolesModule,
     forwardRef(() => AuthModule),

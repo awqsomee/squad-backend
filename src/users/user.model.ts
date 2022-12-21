@@ -4,6 +4,7 @@ import { Role } from 'src/roles/role.model'
 import { UserRoles } from 'src/roles/user-roles.model'
 import { Game } from 'src/games/game.model'
 import { UserGames } from 'src/games/user-games.model'
+import { UserGamesSeek } from 'src/games/user-games-seek.model'
 
 interface UserCreationAttrs {
   email: string
@@ -33,6 +34,6 @@ export class User extends Model<User, UserCreationAttrs> {
   // @BelongsToMany(() => Game, () => UserGames)
   // wishlist: Game[]
 
-  // @BelongsToMany(() => Game, () => UserGames)
-  // searchInGames: Game[]
+  @BelongsToMany(() => Game, () => UserGamesSeek)
+  searches: Game[]
 }

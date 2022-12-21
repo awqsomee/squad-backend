@@ -31,4 +31,10 @@ export class UsersController {
   play(@Body('id') id: number, @Body('playing') playing: boolean, @Req() req) {
     return this.userService.playGame(req.user, id, playing)
   }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('/seek')
+  seek(@Body('id') id: number, @Body('seeking') seeking: boolean, @Req() req) {
+    return this.userService.searchForTeam(req.user, id, seeking)
+  }
 }
