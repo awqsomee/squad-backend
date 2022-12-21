@@ -71,6 +71,15 @@ export class UsersService {
     return user
   }
 
+  async getUserGames(username: string) {
+    const user = await this.userRepository.findOne({ where: { username }, include: { all: true } })
+    return {
+      username: user.username,
+      games: user.games.map((game) => game.title),
+      searches: user.searches.map((search) => search.title),
+    }
+  }
+
   async playGame(currentUser: User, id: number, playing: boolean) {
     const game = await this.gameService.getGameById(id)
     if (!game) throw new BadRequestException("Game doesn't exist")
@@ -89,7 +98,6 @@ export class UsersService {
     if (!game) throw new BadRequestException("Game doesn't exist")
     const user = await this.getUserById(currentUser.id)
     if (searching) {
-      await user.$set('searches', [...user.searches.map((game) => game.id), game.id])
       await user.$set('games', [...user.games.map((game) => game.id), game.id])
       return { message: 'Game added' }
     } else {

@@ -41,4 +41,9 @@ export class UsersController {
   search(@Body('id') id: number, @Body('searching') searching: boolean, @Req() req) {
     return this.userService.searchForTeam(req.user, id, searching)
   }
+
+  @Get(':user/playing')
+  playing(@Param('user') username: string) {
+    return this.userService.getUserGames(username)
+  }
 }
