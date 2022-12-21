@@ -1,4 +1,4 @@
-import { Body, Param, Controller, Get, Post, Delete } from '@nestjs/common'
+import { Body, Query, Param, Controller, Get, Post, Delete } from '@nestjs/common'
 import { CreateGameDto } from './dto/create-game.dto'
 import { GamesService } from './games.service'
 
@@ -14,6 +14,11 @@ export class GamesController {
   @Get()
   getAll() {
     return this.gameService.getGames()
+  }
+
+  @Get('/search')
+  search(@Query('q') query: string) {
+    return this.gameService.searchGames(query)
   }
 
   @Get(':title')

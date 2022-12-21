@@ -1,5 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
 import { InjectModel } from '@nestjs/sequelize'
+import { Op } from 'sequelize'
 import { CreateGameDto } from './dto/create-game.dto'
 import { Game } from './game.model'
 
@@ -15,7 +16,12 @@ export class GamesService {
   }
 
   async getGames(): Promise<Game[]> {
-    const games = await this.gameRepository.findAll({ include: { all: true } })
+    const games = await this.gameRepository.findAll()
+    return games
+  }
+
+  async searchGames(query: string): Promise<Game[]> {
+    const games = await this.gameRepository.findAll({ where: { title: { [Op.iLike]: `%${query}%` } } })
     return games
   }
 
