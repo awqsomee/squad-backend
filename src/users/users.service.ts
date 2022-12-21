@@ -99,6 +99,7 @@ export class UsersService {
     const user = await this.getUserById(currentUser.id)
     if (searching) {
       await user.$set('games', [...user.games.map((game) => game.id), game.id])
+      await user.$set('searches', [...user.searches.map((search) => search.id), game.id])
       return { message: 'Game added' }
     } else {
       await user.$set('searches', [...user.searches.filter((userGame) => userGame.id != game.id)])
