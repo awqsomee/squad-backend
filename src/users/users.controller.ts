@@ -1,4 +1,4 @@
-import { Body, Controller, Req, Get, Post, UseGuards, Query } from '@nestjs/common'
+import { Body, Controller, Req, Get, Post, UseGuards, Query, Param } from '@nestjs/common'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard'
 import { CreateUserDto } from './dto/create-user.dto'
@@ -22,6 +22,12 @@ export class UsersController {
   @Get()
   getAll(@Query('limit') limit: number, @Query('offset') offset: number, @Query('title') title: string) {
     return this.userService.getAllUsers(limit, offset, title)
+  }
+
+  @Get(':user')
+  async getOne(@Param('user') username: string) {
+    const user = await this.userService.getUserByUsername(username)
+    return { username: user.username, games: user.games, searches: user.searches }
   }
 
   @UseGuards(JwtAuthGuard)
