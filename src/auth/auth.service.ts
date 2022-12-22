@@ -17,13 +17,27 @@ export class AuthService {
     }
     const hashPassword = await bcrypt.hash(userDto.password, 5)
     const user = await this.userService.createUser({ ...userDto, username: usernameLowerCase, password: hashPassword })
-    return this.generateToken(user)
+    const token = this.generateToken(user)
+    return {
+      token,
+      user: {
+        id: user.id,
+        username: user.username,
+      },
+    }
   }
 
   async login(userDto: CreateUserDto) {
     const usernameLowerCase = userDto.username.toLowerCase()
     const user = await this.validateUser({ ...userDto, username: usernameLowerCase })
-    return this.generateToken(user)
+    const token = this.generateToken(user)
+    return {
+      token,
+      user: {
+        id: user.id,
+        username: user.username,
+      },
+    }
   }
 
   async auth(currentUser: User) {
