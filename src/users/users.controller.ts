@@ -19,9 +19,9 @@ export class UsersController {
 
   @ApiOperation({ summary: 'Getting all users' })
   @ApiResponse({ status: 200, type: [User] })
-  @Get()
-  getAll(@Query('limit') limit: number, @Query('offset') offset: number, @Query('title') title: string) {
-    return this.userService.getAllUsers(limit, offset, title)
+  @Post('/search')
+  getAll(@Query('limit') limit: number, @Query('offset') offset: number, @Body('titles') titles: string[]) {
+    return this.userService.getAllUsers(limit, offset, titles)
   }
 
   @Get(':user')

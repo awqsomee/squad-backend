@@ -10,17 +10,19 @@ export class AuthService {
   constructor(private userService: UsersService, private jwtService: JwtService) {}
 
   async registration(userDto: CreateUserDto) {
-    const candidate = await this.userService.getUserByUsername(userDto.username)
+    const usernameLowerCase = userDto.username.toLowerCase()
+    const candidate = await this.userService.getUserByUsername(usernameLowerCase)
     if (candidate) {
       throw new HttpException(`User with username ${userDto.username} already exists`, HttpStatus.BAD_REQUEST)
     }
     const hashPassword = await bcrypt.hash(userDto.password, 5)
-    const user = await this.userService.createUser({ ...userDto, password: hashPassword })
+    const user = await this.userService.createUser({ ...userDto, username: usernameLowerCase, password: hashPassword })
     return this.generateToken(user)
   }
 
   async login(userDto: CreateUserDto) {
-    const user = await this.validateUser(userDto)
+    const usernameLowerCase = userDto.username.toLowerCase()
+    const user = await this.validateUser({ ...userDto, username: usernameLowerCase })
     return this.generateToken(user)
   }
 
@@ -32,7 +34,8 @@ export class AuthService {
   }
 
   private async validateUser(userDto: CreateUserDto) {
-    const user = await this.userService.getUserByUsername(userDto.username)
+    const usernameLowerCase = userDto.username.toLowerCase()
+    const user = await this.userService.getUserByUsername(usernameLowerCase)
     if (!user) throw new UnauthorizedException({ message: `User not found` })
 
     const passwordEquals = await bcrypt.compare(userDto.password, user.password)

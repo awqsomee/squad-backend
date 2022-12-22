@@ -23,18 +23,17 @@ export class UsersService {
     return user
   }
 
-  async getAllUsers(limit = 20, offset = 0, title = null) {
+  async getAllUsers(limit = 20, offset = 0, titles = null) {
     let game: Game
     let usersObjects: User[]
-    if (title != null && title != '') {
-      game = await this.gameService.getGameByTitle(title)
+    if (titles != null && titles.length != 0) {
       usersObjects = await this.userRepository.findAll({
         include: [
           {
             model: Game,
             as: 'searches',
             where: {
-              id: game.id,
+              title: titles,
             },
           },
           {
