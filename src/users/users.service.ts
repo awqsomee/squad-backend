@@ -26,7 +26,7 @@ export class UsersService {
   async getAllUsers(limit = 20, offset = 0, title = null) {
     let game: Game
     let usersObjects: User[]
-    if (title != '') {
+    if (title != null && title != '') {
       game = await this.gameService.getGameByTitle(title)
       usersObjects = await this.userRepository.findAll({
         include: [
