@@ -13,7 +13,7 @@ export class AuthService {
     const usernameLowerCase = userDto.username.toLowerCase()
     const candidate = await this.userService.getUserByUsername(usernameLowerCase)
     if (candidate) {
-      throw new HttpException(`User with username ${userDto.username} already exists`, HttpStatus.BAD_REQUEST)
+      throw new HttpException(`User with username "${userDto.username}" already exists`, HttpStatus.BAD_REQUEST)
     }
     const hashPassword = await bcrypt.hash(userDto.password, 5)
     const user = await this.userService.createUser({ ...userDto, username: usernameLowerCase, password: hashPassword })
