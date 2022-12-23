@@ -28,7 +28,7 @@ export class UsersController {
   @Get(':user')
   async getOne(@Param('user') username: string) {
     const user = await this.userService.getUserByUsername(username)
-    return { username: user.username, games: user.games, searches: user.searches }
+    return { username: user.username, description: user.description, games: user.games, searches: user.searches }
   }
 
   @UseGuards(JwtAuthGuard)

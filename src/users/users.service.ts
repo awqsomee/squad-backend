@@ -56,7 +56,7 @@ export class UsersService {
     //   return { email: user.email, role: user.roles.map((role) => role.value) }
     // })
     const users = usersObjects.map((user) => {
-      return { username: user.username, searches: user.searches, games: user.games }
+      return { username: user.username, description: user.description, searches: user.searches, games: user.games }
     })
     return users
   }
@@ -76,6 +76,7 @@ export class UsersService {
     if (!user) throw new BadRequestException("User doesn't exist")
     return {
       username: user.username,
+      description: user.description,
       games: user.games.map((game) => game.title),
       searches: user.searches.map((search) => search.title),
     }
@@ -119,11 +120,13 @@ export class UsersService {
       if (candidate?.username) throw new BadRequestException(`Username "${candidate.username}" already exists`)
     }
     user.username = newUserInfo.username
+    user.description = newUserInfo.description
     await user.save()
     return {
       user: {
         id: user.id,
         username: user.username,
+        description: user.description,
       },
     }
   }
