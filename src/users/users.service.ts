@@ -111,11 +111,11 @@ export class UsersService {
   async editUserInfo(currentUser: User, newUserInfo: User) {
     console.log(currentUser)
     console.log(newUserInfo)
-    if (newUserInfo.username == null) throw { message: "Username couldn't be empty" }
+    if (newUserInfo.username == null) throw new BadRequestException(`Username couldn't be empty`)
     let user = await this.getUserById(currentUser.id)
     if (user.username != newUserInfo.username.toLowerCase()) {
       var candidate = await this.getUserByUsername(newUserInfo.username.toLowerCase())
-      if (candidate?.username) throw { message: `Username "${candidate.username}" already exists` }
+      if (candidate?.username) throw new BadRequestException(`Username "${candidate.username}" already exists`)
     }
     user.username = newUserInfo.username
     await user.save()
