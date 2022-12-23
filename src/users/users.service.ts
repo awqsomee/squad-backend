@@ -65,6 +65,7 @@ export class UsersService {
     const user = await this.userRepository.findOne({ where: { username }, include: { all: true } })
     return user
   }
+
   async getUserById(id: number): Promise<User> {
     const user = await this.userRepository.findOne({ where: { id }, include: { all: true } })
     return user
@@ -104,6 +105,25 @@ export class UsersService {
     } else {
       await user.$set('searches', [...user.searches.filter((userGame) => userGame.id != game.id)])
       return { message: 'Game removed' }
+    }
+  }
+
+  async editUserInfo(currentUser: User, newUserInfo: User) {
+    console.log(currentUser)
+    console.log(newUserInfo)
+    if (newUserInfo.username == null) throw { message: "Username couldn't be empty" }
+    let user = await this.getUserById(currentUser.id)
+    if (user.username != newUserInfo.username.toLowerCase()) {
+      var candidate = await this.getUserByUsername(newUserInfo.username.toLowerCase())
+      if (candidate?.username) throw { message: `Username "${candidate.username}" already exists` }
+    }
+    user.username = newUserInfo.username
+    await user.save()
+    return {
+      user: {
+        id: user.id,
+        username: user.username,
+      },
     }
   }
 }

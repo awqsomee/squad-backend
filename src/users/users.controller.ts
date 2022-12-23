@@ -1,4 +1,5 @@
 import { Body, Controller, Req, Get, Post, UseGuards, Query, Param } from '@nestjs/common'
+import { Put } from '@nestjs/common/decorators'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard'
 import { CreateUserDto } from './dto/create-user.dto'
@@ -45,5 +46,11 @@ export class UsersController {
   @Get(':user/playing')
   playing(@Param('user') username: string) {
     return this.userService.getUserGames(username)
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Put('/edit')
+  editInfo(@Body() newUserInfo: User, @Req() req) {
+    return this.userService.editUserInfo(req.user, newUserInfo)
   }
 }

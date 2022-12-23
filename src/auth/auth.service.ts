@@ -10,11 +10,11 @@ export class AuthService {
   constructor(private userService: UsersService, private jwtService: JwtService) {}
 
   async registration(userDto: CreateUserDto) {
+    if (userDto.username == '') throw new HttpException(`Username is empty`, HttpStatus.BAD_REQUEST)
     const usernameLowerCase = userDto.username.toLowerCase()
     const candidate = await this.userService.getUserByUsername(usernameLowerCase)
-    if (candidate) {
+    if (candidate)
       throw new HttpException(`User with username "${userDto.username}" already exists`, HttpStatus.BAD_REQUEST)
-    }
     const hashPassword = await bcrypt.hash(userDto.password, 5)
     const user = await this.userService.createUser({ ...userDto, username: usernameLowerCase, password: hashPassword })
     const { token } = this.generateToken(user)
