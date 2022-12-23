@@ -73,6 +73,7 @@ export class UsersService {
 
   async getUserGames(username: string) {
     const user = await this.userRepository.findOne({ where: { username }, include: { all: true } })
+    if (!user) throw new BadRequestException("User doesn't exist")
     return {
       username: user.username,
       games: user.games.map((game) => game.title),

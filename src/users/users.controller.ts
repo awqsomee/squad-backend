@@ -38,7 +38,7 @@ export class UsersController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Post('/search')
+  @Post('/searchteam')
   search(@Body('id') id: number, @Body('searching') searching: boolean, @Req() req) {
     return this.userService.searchForTeam(req.user, id, searching)
   }
