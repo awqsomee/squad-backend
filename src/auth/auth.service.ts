@@ -36,6 +36,7 @@ export class AuthService {
       user: {
         id: user.id,
         username: user.username,
+        description: user.description,
       },
     }
   }
@@ -48,6 +49,7 @@ export class AuthService {
       user: {
         id: user.id,
         username: user.username,
+        description: user.description,
       },
     }
   }
